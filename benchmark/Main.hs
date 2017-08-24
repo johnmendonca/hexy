@@ -10,8 +10,6 @@ main = defaultMain
   [ bgroup "Word32"
     [ bench "printf"   $ nf   (printf "%08x" :: Word32 -> String) 0x1f
     , bench "showHex"  $ nf   (showHex (0x1f :: Word32)) ""
-    , bench "xbuild"   $ whnf xbuild   (0x1f :: Word32)
-    , bench "xbuildu"  $ whnf xbuildu  (0x1f :: Word32)
     , bench "xshowl"   $ nf   xshowl   (0x1f :: Word32)
     , bench "xshowlp"  $ nf   xshowlp  (0x1f :: Word32)
     , bench "xshowlu"  $ nf   xshowlu  (0x1f :: Word32)

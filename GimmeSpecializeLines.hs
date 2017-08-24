@@ -14,7 +14,7 @@ main = Text.Lazy.IO.putStr . renderMustache template $ json
 
 template :: Template
 template = [mustache|{{#types}}
-{-# SPECIALIZE zeroPaddedHex :: LengthTrackingBuilder {{a}} -> Builder #-}
+{-# SPECIALIZE textShowIntAtBase :: {{a}} -> (Int -> Char) -> {{a}} -> Text.Text #-}
 {{/types}}
 |]
 

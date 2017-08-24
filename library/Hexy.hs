@@ -1,170 +1,76 @@
 module Hexy
   ( HexShow(..)
-  , xshow
-  , xshowp
-  , xshowu
-  , xshowpu
-  , xshowl
-  , xshowlp
-  , xshowlu
-  , xshowlpu
   ) where
 
-import Hexy.Internal
+import Hexy.Internal (showHexTextLower, showHexTextUpper, unsafeDropHexPrefix)
 
 import Data.Int
 import Data.Word
 import qualified Data.Text as Text
 import qualified Data.Text.Lazy as Text.Lazy
-import Data.Text.Lazy.Builder (Builder)
-import qualified Data.Text.Lazy.Builder as Text.Lazy.Builder
 
--- | Conversion of values to hexadecimal 'String's.
 class HexShow a where
-  xbuild :: a -> Builder
-  xbuildu :: a -> Builder
+  xshow :: a -> Text.Text
+  xshow = unsafeDropHexPrefix . xshowp
 
-xshow :: HexShow a => a -> Text.Text
-{-# SPECIALIZE xshow :: Int -> Text.Text #-}
-{-# SPECIALIZE xshow :: Int8 -> Text.Text #-}
-{-# SPECIALIZE xshow :: Int16 -> Text.Text #-}
-{-# SPECIALIZE xshow :: Int32 -> Text.Text #-}
-{-# SPECIALIZE xshow :: Int64 -> Text.Text #-}
-{-# SPECIALIZE xshow :: Word -> Text.Text #-}
-{-# SPECIALIZE xshow :: Word8 -> Text.Text #-}
-{-# SPECIALIZE xshow :: Word16 -> Text.Text #-}
-{-# SPECIALIZE xshow :: Word32 -> Text.Text #-}
-{-# SPECIALIZE xshow :: Word64 -> Text.Text #-}
-xshow = Text.Lazy.toStrict . xshowl
+  xshowp :: a -> Text.Text
 
-xshowp :: HexShow a => a -> Text.Text
-{-# SPECIALIZE xshowp :: Int -> Text.Text #-}
-{-# SPECIALIZE xshowp :: Int8 -> Text.Text #-}
-{-# SPECIALIZE xshowp :: Int16 -> Text.Text #-}
-{-# SPECIALIZE xshowp :: Int32 -> Text.Text #-}
-{-# SPECIALIZE xshowp :: Int64 -> Text.Text #-}
-{-# SPECIALIZE xshowp :: Word -> Text.Text #-}
-{-# SPECIALIZE xshowp :: Word8 -> Text.Text #-}
-{-# SPECIALIZE xshowp :: Word16 -> Text.Text #-}
-{-# SPECIALIZE xshowp :: Word32 -> Text.Text #-}
-{-# SPECIALIZE xshowp :: Word64 -> Text.Text #-}
-xshowp = Text.Lazy.toStrict . xshowlp
+  xshowu :: a -> Text.Text
+  xshowu = unsafeDropHexPrefix . xshowpu
 
-xshowu :: HexShow a => a -> Text.Text
-{-# SPECIALIZE xshowu :: Int -> Text.Text #-}
-{-# SPECIALIZE xshowu :: Int8 -> Text.Text #-}
-{-# SPECIALIZE xshowu :: Int16 -> Text.Text #-}
-{-# SPECIALIZE xshowu :: Int32 -> Text.Text #-}
-{-# SPECIALIZE xshowu :: Int64 -> Text.Text #-}
-{-# SPECIALIZE xshowu :: Word -> Text.Text #-}
-{-# SPECIALIZE xshowu :: Word8 -> Text.Text #-}
-{-# SPECIALIZE xshowu :: Word16 -> Text.Text #-}
-{-# SPECIALIZE xshowu :: Word32 -> Text.Text #-}
-{-# SPECIALIZE xshowu :: Word64 -> Text.Text #-}
-xshowu = Text.Lazy.toStrict . xshowlu
+  xshowpu :: a -> Text.Text
 
-xshowpu :: HexShow a => a -> Text.Text
-{-# SPECIALIZE xshowpu :: Int -> Text.Text #-}
-{-# SPECIALIZE xshowpu :: Int8 -> Text.Text #-}
-{-# SPECIALIZE xshowpu :: Int16 -> Text.Text #-}
-{-# SPECIALIZE xshowpu :: Int32 -> Text.Text #-}
-{-# SPECIALIZE xshowpu :: Int64 -> Text.Text #-}
-{-# SPECIALIZE xshowpu :: Word -> Text.Text #-}
-{-# SPECIALIZE xshowpu :: Word8 -> Text.Text #-}
-{-# SPECIALIZE xshowpu :: Word16 -> Text.Text #-}
-{-# SPECIALIZE xshowpu :: Word32 -> Text.Text #-}
-{-# SPECIALIZE xshowpu :: Word64 -> Text.Text #-}
-xshowpu = Text.Lazy.toStrict . xshowlpu
+  xshowl :: a -> Text.Lazy.Text
+  xshowl = Text.Lazy.fromStrict . xshow
 
-xshowl :: HexShow a => a -> Text.Lazy.Text
-{-# SPECIALIZE xshowl :: Int -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowl :: Int8 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowl :: Int16 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowl :: Int32 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowl :: Int64 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowl :: Word -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowl :: Word8 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowl :: Word16 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowl :: Word32 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowl :: Word64 -> Text.Lazy.Text #-}
-xshowl = Text.Lazy.Builder.toLazyText . xbuild
+  xshowlp :: a -> Text.Lazy.Text
+  xshowlp = Text.Lazy.fromStrict . xshowp
 
-xshowlp :: HexShow a => a -> Text.Lazy.Text
-{-# SPECIALIZE xshowlp :: Int -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlp :: Int8 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlp :: Int16 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlp :: Int32 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlp :: Int64 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlp :: Word -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlp :: Word8 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlp :: Word16 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlp :: Word32 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlp :: Word64 -> Text.Lazy.Text #-}
-xshowlp = Text.Lazy.Builder.toLazyText . prefixHex . xbuild
+  xshowlu :: a -> Text.Lazy.Text
+  xshowlu = Text.Lazy.fromStrict . xshowu
 
-xshowlu :: HexShow a => a -> Text.Lazy.Text
-{-# SPECIALIZE xshowlu :: Int -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlu :: Int8 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlu :: Int16 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlu :: Int32 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlu :: Int64 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlu :: Word -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlu :: Word8 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlu :: Word16 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlu :: Word32 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlu :: Word64 -> Text.Lazy.Text #-}
-xshowlu = Text.Lazy.Builder.toLazyText . xbuildu
+  xshowlpu :: a -> Text.Lazy.Text
+  xshowlpu = Text.Lazy.fromStrict . xshowpu
 
-xshowlpu :: HexShow a => a -> Text.Lazy.Text
-{-# SPECIALIZE xshowlpu :: Int -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlpu :: Int8 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlpu :: Int16 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlpu :: Int32 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlpu :: Int64 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlpu :: Word -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlpu :: Word8 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlpu :: Word16 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlpu :: Word32 -> Text.Lazy.Text #-}
-{-# SPECIALIZE xshowlpu :: Word64 -> Text.Lazy.Text #-}
-xshowlpu = Text.Lazy.Builder.toLazyText . prefixHex . xbuildu
+  {-# MINIMAL xshowp, xshowpu #-}
 
 instance HexShow Int where
-  xbuild = xbuildStorable
-  xbuildu = xbuilduStorable
+  xshowp = showHexTextLower
+  xshowpu = showHexTextUpper
 
 instance HexShow Int8 where
-  xbuild = xbuildStorable
-  xbuildu = xbuilduStorable
+  xshowp = showHexTextLower
+  xshowpu = showHexTextUpper
 
 instance HexShow Int16 where
-  xbuild = xbuildStorable
-  xbuildu = xbuilduStorable
+  xshowp = showHexTextLower
+  xshowpu = showHexTextUpper
 
 instance HexShow Int32 where
-  xbuild = xbuildStorable
-  xbuildu = xbuilduStorable
+  xshowp = showHexTextLower
+  xshowpu = showHexTextUpper
 
 instance HexShow Int64 where
-  xbuild = xbuildStorable
-  xbuildu = xbuilduStorable
+  xshowp = showHexTextLower
+  xshowpu = showHexTextUpper
 
 instance HexShow Word where
-  xbuild = xbuildStorable
-  xbuildu = xbuilduStorable
+  xshowp = showHexTextLower
+  xshowpu = showHexTextUpper
 
 instance HexShow Word8 where
-  xbuild = xbuildStorable
-  xbuildu = xbuilduStorable
+  xshowp = showHexTextLower
+  xshowpu = showHexTextUpper
 
 instance HexShow Word16 where
-  xbuild = xbuildStorable
-  xbuildu = xbuilduStorable
+  xshowp = showHexTextLower
+  xshowpu = showHexTextUpper
 
 instance HexShow Word32 where
-  xbuild = xbuildStorable
-  xbuildu = xbuilduStorable
+  xshowp = showHexTextLower
+  xshowpu = showHexTextUpper
 
 instance HexShow Word64 where
-  xbuild = xbuildStorable
-  xbuildu = xbuilduStorable
+  xshowp = showHexTextLower
+  xshowpu = showHexTextUpper
 
